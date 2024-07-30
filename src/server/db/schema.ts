@@ -56,7 +56,7 @@ export const weather = createWeatherTable(
   })
 );
 
-export const weatherPreviousDay = createWeatherTable(
+export const weatherPreviousDay = createWeatherPreviousWeatherTable(
   "weatherPreviousDay",
   {
     id: serial("id").primaryKey(),
