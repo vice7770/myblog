@@ -19,6 +19,7 @@ import {
  */
 export const createTable = pgTableCreator((name) => `myblog_${name}`);
 export const createWeatherTable = pgTableCreator((name) => `myblog_${name}`);
+export const createWeatherPreviousWeatherTable = pgTableCreator((name) => `myblog_${name}`);
 
 export const posts = createTable(
   "post",
