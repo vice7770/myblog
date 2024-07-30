@@ -18,7 +18,7 @@ import {
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const createTable = pgTableCreator((name) => `myblog_${name}`);
-export const createWeatherTable = pgTableCreator((name) => `weather_${name}`);
+export const createWeatherTable = pgTableCreator((name) => `myblog_${name}`);
 
 export const posts = createTable(
   "post",
@@ -51,6 +51,6 @@ export const weather = createWeatherTable(
     ),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+    nameIndex: index("weather_idx").on(example.name),
   })
 );
