@@ -4,6 +4,7 @@
 import { sql } from "drizzle-orm";
 import {
   index,
+  jsonb,
   pgTableCreator,
   serial,
   timestamp,
@@ -17,12 +18,31 @@ import {
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const createTable = pgTableCreator((name) => `myblog_${name}`);
+export const createWeatherTable = pgTableCreator((name) => `weather_${name}`);
 
 export const posts = createTable(
   "post",
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date()
+    ),
+  },
+  (example) => ({
+    nameIndex: index("name_idx").on(example.name),
+  })
+);
+
+export const weather = createWeatherTable(
+  "weather",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }),
+    metadata: jsonb("metadata").default(sql`'{}'`),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
