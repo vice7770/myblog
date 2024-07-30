@@ -54,3 +54,21 @@ export const weather = createWeatherTable(
     nameIndex: index("weather_idx").on(example.name),
   })
 );
+
+export const weatherPreviousDay = createWeatherTable(
+  "weatherPreviousDay",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }),
+    metadata: jsonb("metadata").default(sql`'{}'`),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date()
+    ),
+  },
+  (example) => ({
+    nameIndex: index("weatherPreviousDay_idx").on(example.name),
+  })
+);
