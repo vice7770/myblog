@@ -42,7 +42,7 @@ export const weather = createWeatherTable(
   "weather",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    name: varchar("name", { length: 256 }).unique(),
     metadata: jsonb("metadata").default(sql`'{}'`),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -57,10 +57,10 @@ export const weather = createWeatherTable(
 );
 
 export const weatherPreviousDay = createWeatherPreviousWeatherTable(
-  "weatherPreviousDay",
+  "weatherpreviousday",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    name: varchar("name", { length: 256 }).unique(),
     metadata: jsonb("metadata").default(sql`'{}'`),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -70,6 +70,6 @@ export const weatherPreviousDay = createWeatherPreviousWeatherTable(
     ),
   },
   (example) => ({
-    nameIndex: index("weatherPreviousDay_idx").on(example.name),
+    nameIndex: index("weatherpreviousday_idx").on(example.name),
   })
 );
