@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { CardWithForm } from "~/components/CardWithForm";
+import { type WeatherMetaData } from "~/api/weather/graph/types";
+import { getWeatherMetaData } from "~/api/weather/graph/weather";
 import Hero from "~/components/Hero";
 import { Button } from "~/components/ui/button";
 import { WeatherChart } from "~/components/WeatherChart";
-import { db } from "~/server/db";
+import { getWeatherStatus } from "~/utils/weather/weather";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-
-  const posts = await db.query.posts.findMany();
-  console.log(posts);
+  const weatherMetaData : WeatherMetaData[] = await getWeatherMetaData();
+  const weatherStatus = getWeatherStatus(weatherMetaData);
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#add8e6] to-[#00008b] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
@@ -26,7 +26,7 @@ export default async function HomePage() {
             </Button>
           </div>
           <div className=" flex justify-center items-center h-[500px] w-full rounded-xl bg-gradient-to-br from-surface-brand to-[#3b5998] p-xl mt-[76px]">
-           <WeatherChart />
+           <WeatherChart weatherStatus={weatherStatus}/>
           </div>
         </div>
       </div>

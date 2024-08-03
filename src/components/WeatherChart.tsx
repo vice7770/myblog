@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React ßfrom 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +12,6 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { color } from 'chart.js/helpers';
 
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,6 +20,14 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+interface Props {
+  weatherStatus: {
+    hot: number;
+    cool: number;
+    cold: number;
+  };
+}
 
 export const options = {
   responsive: true,
@@ -43,17 +50,17 @@ const backgroundColors = [
   'rgba(0, 76, 153, 0.8)', // Color for '❄️ Cold'
 ];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => Math.floor(Math.random() * 100)),
-      backgroundColor: backgroundColors,
-    },
-  ],
-};
-
-export const WeatherChart = () => {
+export const WeatherChart = (props: Props) => {
+  const { weatherStatus } = props;
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: Object.values(weatherStatus).map((value) => value),
+        backgroundColor: backgroundColors,
+      },
+    ],
+  };
   return <Bar options={options} data={data} />;
 };
