@@ -9,8 +9,8 @@ import { getWeatherStatus } from "~/utils/weather/weather";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const weatherMetaData : WeatherMetaData[] = await getWeatherMetaData();
-  const weatherStatus = getWeatherStatus(weatherMetaData);
+  const weatherMetaData : unknown[] = await getWeatherMetaData();
+  const weatherStatus = getWeatherStatus(weatherMetaData as WeatherMetaData[]);
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#add8e6] to-[#00008b] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
