@@ -1,5 +1,5 @@
 "use client"
-import React ßfrom 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
