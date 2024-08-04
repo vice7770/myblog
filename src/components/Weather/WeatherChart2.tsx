@@ -62,7 +62,7 @@ export async function WeatherChart2(props : Props) {
         <CardDescription>Lets take a look at weather</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+        <ChartContainer config={chartConfig} className="min-h-[500px] w-full">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
