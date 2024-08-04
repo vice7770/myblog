@@ -1,16 +1,19 @@
-import Link from "next/link";
-import { type WeatherMetaData } from "~/api/weather/graph/types";
-import { getWeatherMetaData } from "~/api/weather/graph/weather";
 import Hero from "~/components/Hero";
 import { Button } from "~/components/ui/button";
-import { WeatherChart } from "~/components/WeatherChart";
-import { getWeatherStatus } from "~/utils/weather/weather";
+import WeatherChart2 from "~/components/WeatherChart2";
+
+import { getWeatherAverageTemp, getWeatherStatus } from "~/utils/weather/weather";
+import { type WeatherMetaData } from "~/api/weather/graph/types";
+import { getWeatherMetaData, getWeatherYesterdayMetaData } from "~/api/weather/graph/weather";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const weatherMetaData : unknown[] = await getWeatherMetaData();
+  const weatherYesterdayDataData : unknown[] = await getWeatherYesterdayMetaData();
   const weatherStatus = getWeatherStatus(weatherMetaData as WeatherMetaData[]);
+  const averageTemp = getWeatherAverageTemp(weatherMetaData as WeatherMetaData[]);
+  const averageTempYesterday = getWeatherAverageTemp(weatherYesterdayDataData as WeatherMetaData[])
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#add8e6] to-[#00008b] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
@@ -26,7 +29,8 @@ export default async function HomePage() {
             </Button>
           </div>
           <div className=" flex justify-center items-center h-[500px] w-full rounded-xl bg-gradient-to-br from-surface-brand to-[#3b5998] p-xl mt-[76px]">
-           <WeatherChart weatherStatus={weatherStatus}/>
+           {/* <WeatherChart weatherStatus={weatherStatus}/> */}
+           <WeatherChart2 weatherStatus={weatherStatus} averageTemp={averageTemp} averageTempYesterday={averageTempYesterday}/>
           </div>
         </div>
       </div>
