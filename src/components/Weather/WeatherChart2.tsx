@@ -46,7 +46,7 @@ interface Props {
   averageTempYesterday: number
 }
 
-export async function WeatherChart2(props : Props) {
+export function WeatherChart2(props : Props) {
   const { weatherStatus, averageTemp, averageTempYesterday } = props
   const chartData = [
     { weather: "hot", count: weatherStatus.hot, fill: "var(--color-hot)" },
