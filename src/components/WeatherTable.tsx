@@ -2,7 +2,7 @@ import react from 'react';
 
 const WeatherTable = () => {
     return (
-        <div className='flex justify-center items-center min-h-[500px] w-2/3 m-[76px] border-4 border-blue-400'>
+        <div className='flex flex-col w-[800px] h-[600px] justify-center items-center border-4 border-blue-400'>
             <table className='w-full'>
                 <thead>
                     <tr>

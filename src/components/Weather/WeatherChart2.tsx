@@ -55,14 +55,13 @@ export function WeatherChart2(props : Props) {
   ];
   const tempIsUp = averageTemp > averageTempYesterday;
   return (
-    
-    <Card >
+    <Card className="flex flex-col w-[800px]">
       <CardHeader>
         <CardTitle>Weather</CardTitle>
         <CardDescription>Lets take a look at weather</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[500px] w-full">
+        <ChartContainer config={chartConfig} >
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis

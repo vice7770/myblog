@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 const useWeatherStore = create((set) => ({
-  isOverViewToggled: false,
+  isOverViewToggled: true,
   // yesterdayWeather and weather for table
   actions: {
     setOverViewToggled: () => set((state) => ({ isOverViewToggled: !state.isOverViewToggled }))

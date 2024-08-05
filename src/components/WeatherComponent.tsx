@@ -24,7 +24,7 @@ const WeatherComponent = (props : Props) => {
         console.log(isOverViewToggled)
     }, [isOverViewToggled]) 
     return (
-      <>
+      <div className=' flex h-full justify-center items-center border-4'>
         {isOverViewToggled ? (
           <WeatherChart2
             weatherStatus={weatherStatus}
@@ -34,7 +34,7 @@ const WeatherComponent = (props : Props) => {
         ) : (
           <WeatherTable />
         )}
-      </>
+      </div>
     );
 }
 
