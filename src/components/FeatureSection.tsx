@@ -17,7 +17,7 @@ const FeatureSection = async () => {
             <div className="grid grid-cols-1 gap-4 md:gap-8 w-full">
                 <h3 className="flex items-center justify-center text-2xl font-bold">Lets play a little game</h3>
                 <div className="flex justify-center items-center w-full space-x-4">
-                    <ButtonsWeather />                    
+                    {/* <ButtonsWeather />                     */}
                 </div>
                 <div className=" flex justify-center items-center w-full rounded-xl bg-gradient-to-br from-surface-brand to-[#3b5998] p-xl mt-[76px]">
                     <Suspense fallback={<div>Loading...</div>}>

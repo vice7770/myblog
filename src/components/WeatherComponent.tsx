@@ -1,11 +1,11 @@
 "use client"
-
-import dynamic from 'next/dynamic';
-import React, { useEffect } from 'react';
 import { useIsOverViewToggled } from '~/stores/weatherSection';
 import WeatherTable from './WeatherTable';
+import SideTab from './Weather/SideTab';
+import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 
-const WeatherChart2 = dynamic(() => import('./Weather/WeatherChart2'), { ssr: false })
+const WeatherChart2 = dynamic(() => import('./Weather/WeatherChart2'), { ssr: false });
 
 interface Props {
     weatherStatus: {
@@ -17,24 +17,32 @@ interface Props {
     averageTempYesterday: number
 }
 
-const WeatherComponent = (props : Props) => {
+const WeatherComponent = (props: Props) => {
     const { weatherStatus, averageTemp, averageTempYesterday } = props;
     const isOverViewToggled = useIsOverViewToggled();
+    
     useEffect(() => {
-        console.log(isOverViewToggled)
-    }, [isOverViewToggled]) 
+        console.log(isOverViewToggled);
+    }, [isOverViewToggled]);
+
     return (
-      <div className=' flex h-full justify-center items-center border-4'>
-        {isOverViewToggled ? (
-          <WeatherChart2
-            weatherStatus={weatherStatus}
-            averageTemp={averageTemp}
-            averageTempYesterday={averageTempYesterday}
-          />
-        ) : (
-          <WeatherTable />
-        )}
-      </div>
+        <div className='flex h-full justify-center items-center border-4'>
+            {isOverViewToggled ? (
+                <>
+                    <WeatherChart2
+                        weatherStatus={weatherStatus}
+                        averageTemp={averageTemp}
+                        averageTempYesterday={averageTempYesterday}
+                    />
+                    <SideTab />
+                </>
+            ) : (
+                <>
+                    <WeatherTable />
+                    <SideTab />
+                </>
+            )}
+        </div>
     );
 }
 
