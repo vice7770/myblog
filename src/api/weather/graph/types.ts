@@ -1,44 +1,20 @@
 export interface WeatherMetaData {
-    coord: {
-        lon: number;
-        lat: number;
-    };
-    weather: Array<{
-        id: number;
-        main: string;
-        description: string;
-        icon: string;
-    }>;
-    base: string;
-    main: {
-        temp: number;
-        feels_like: number;
-        temp_min: number;
-        temp_max: number;
-        pressure: number;
-        humidity: number;
-        sea_level: number;
-        grnd_level: number;
-    };
-    visibility: number;
-    wind: {
-        speed: number;
-        deg: number;
-        gust: number;
-    };
-    clouds: {
-        all: number;
-    };
-    dt: number;
-    sys: {
-        type: number;
-        id: number;
-        country: string;
-        sunrise: number;
-        sunset: number;
-    };
-    timezone: number;
-    id: number;
-    name: string;
-    cod: number;
-}
+  daily: {
+    time: string[];
+    sunset: null | Record<string, number>;
+    sunrise: Record<string, number>;
+    uvIndexMax: Record<string, number>;
+    weatherCode: Record<string, number>;
+    windSpeed10mMax: Record<string, number>;
+    daylightDuration: null | Record<string, number>;
+    precipitationSum: Record<string, number>;
+    temperature2mMax: Record<string, number>;
+    temperature2mMin: Record<string, number>;
+  };
+  current: {
+    rain: number;
+    time: string;
+    cloudCover: number;
+    relativeHumidity2m: number;
+  };
+};
