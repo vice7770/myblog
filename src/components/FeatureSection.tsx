@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { getWeatherAverageTemp, getWeatherStatus } from "~/utils/weather/weather";
+import { getWeatherAverageTemp, getWeatherAverageTempYesterday, getWeatherStatus } from "~/utils/weather/weather";
 import { type WeatherMetaData } from "~/api/weather/graph/types";
 import { getWeatherMetaData, getWeatherYesterdayMetaData } from "~/api/weather/graph/weather";
 import WeatherComponent from "./WeatherComponent";
@@ -10,7 +10,7 @@ const FeatureSection = async () => {
     const weatherYesterdayDataData : WeatherMetaData[] = await getWeatherYesterdayMetaData();
     const weatherStatus = getWeatherStatus(weatherMetaData);
     const averageTemp = getWeatherAverageTemp(weatherMetaData);
-    const averageTempYesterday = getWeatherAverageTemp(weatherYesterdayDataData)
+    const averageTempYesterday = getWeatherAverageTempYesterday(weatherMetaData);
     return (
         <section className="flex justify-center items-center w-full">
             <div className="grid grid-cols-1 gap-4 md:gap-8 w-full">

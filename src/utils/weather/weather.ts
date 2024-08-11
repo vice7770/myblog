@@ -9,7 +9,7 @@ export function getWeatherStatus(weather : WeatherMetaData[]) {
     weather?.forEach((weather) => {
         if (weather.daily.temperature2mMin[1] > 30) {
             weatherStatus.hot++;
-        } else if (weather.daily.temperature2mMin[0] >= 20 && weather.daily.temperature2mMin[1] <= 30) { // 20°C to Fahrenheit
+        } else if (weather.daily.temperature2mMin[0] >= 20 && weather.daily.temperature2mMin[0] <= 30) { // 20°C to Fahrenheit
             weatherStatus.cool++;
         } else {
             weatherStatus.cold++;
@@ -21,5 +21,10 @@ export function getWeatherStatus(weather : WeatherMetaData[]) {
 
 export function getWeatherAverageTemp(weather : WeatherMetaData[]) {
     const totalTemp = weather?.reduce((acc, weather) => acc + weather.daily.temperature2mMin[0], 0);
+    return totalTemp / weather?.length;
+}
+
+export function getWeatherAverageTempYesterday(weather : WeatherMetaData[]) {
+    const totalTemp = weather?.reduce((acc, weather) => acc + weather.daily.temperature2mMin[1], 0);
     return totalTemp / weather?.length;
 }
