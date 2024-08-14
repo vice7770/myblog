@@ -1,16 +1,15 @@
 import { Suspense } from "react";
 
 import { getWeatherAverageTemp, getWeatherAverageTempYesterday, getWeatherStatus } from "~/utils/weather/weather";
-import { type WeatherMetaData } from "~/api/weather/graph/types";
-import { getWeatherMetaData, getWeatherYesterdayMetaData } from "~/api/weather/graph/weather";
+import { type WeatherData } from "~/api/weather/graph/types";
+import { getWeatherMetaData } from "~/api/weather/graph/weather";
 import WeatherComponent from "./WeatherComponent";
 
 const FeatureSection = async () => {
-    const weatherMetaData : WeatherMetaData[] = await getWeatherMetaData();
-    const weatherYesterdayDataData : WeatherMetaData[] = await getWeatherYesterdayMetaData();
-    const weatherStatus = getWeatherStatus(weatherMetaData);
-    const averageTemp = getWeatherAverageTemp(weatherMetaData);
-    const averageTempYesterday = getWeatherAverageTempYesterday(weatherMetaData);
+    const weatherData : WeatherData[] = await getWeatherMetaData();
+    const weatherStatus = getWeatherStatus(weatherData.map((weather) => weather.metadata));
+    const averageTemp = getWeatherAverageTemp(weatherData.map((weather) => weather.metadata));
+    const averageTempYesterday = getWeatherAverageTempYesterday(weatherData.map((weather) => weather.metadata));
     return (
         <section className="flex justify-center items-center w-full">
             <div className="grid grid-cols-1 gap-4 md:gap-8 w-full">
@@ -24,8 +23,7 @@ const FeatureSection = async () => {
                             weatherStatus={weatherStatus} 
                             averageTemp={averageTemp} 
                             averageTempYesterday={averageTempYesterday}
-                            weatherMetaData={weatherMetaData}
-                            weatherYesterdayDataData={weatherYesterdayDataData}                        
+                            weatherData={weatherData}                    
                         />    
                     </Suspense>
                 </div>

@@ -4,7 +4,7 @@ import WeatherTable from './WeatherTable';
 import SideTab from './Weather/SideTab';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
-import { type WeatherMetaData } from "~/api/weather/graph/types";
+import { type WeatherData } from "~/api/weather/graph/types";
 
 const WeatherChart2 = dynamic(() => import('./Weather/WeatherChart2'), { ssr: false });
 
@@ -16,12 +16,11 @@ interface Props {
     }
     averageTemp: number
     averageTempYesterday: number
-    weatherMetaData: WeatherMetaData[]
-    weatherYesterdayDataData: WeatherMetaData[]
+    weatherData: WeatherData[]
 }
 
 const WeatherComponent = (props: Props) => {
-    const { weatherStatus, averageTemp, averageTempYesterday, weatherMetaData, weatherYesterdayDataData } = props;
+    const { weatherStatus, averageTemp, averageTempYesterday, weatherData} = props;
     const isOverViewToggled = useIsOverViewToggled();
     
     useEffect(() => {
@@ -40,7 +39,7 @@ const WeatherComponent = (props: Props) => {
                 </>
             ) : (
                 <>
-                    {/* <WeatherTable weatherMetaData={weatherMetaData} weatherYesterdayDataData={weatherYesterdayDataData}/> */}
+                    <WeatherTable weatherData={weatherData} />
                     <SideTab />
                 </>
             )}

@@ -18,3 +18,8 @@ export interface WeatherMetaData {
     relativeHumidity2m: number;
   };
 };
+
+export interface WeatherData {
+  name: string;
+  metadata: WeatherMetaData;
+};
