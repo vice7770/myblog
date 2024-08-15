@@ -1,16 +1,20 @@
 "use client"
 
 import React from "react";
+
 import { Button } from "~/components/ui/button";
 import { useWeatherActions, useWeatherView } from "~/stores/weatherSection";
 
 const SideTab = () => {
-    const { setWeatherView, useWeatherView } = useWeatherActions();
+    const { setWeatherView } = useWeatherActions();
+    const weatherView = useWeatherView();
+    const buttonBaseStyle = "h-16 w-16 rounded-br-lg border border-white bg-gray-500 hover:bg-slate-600 p-0 text-lg text-black";
+    
     return (
       <div className="flex h-full flex-col justify-start">
         <Button
-          id="overview"
-          className="h-16 w-16 rounded-br-lg border border-white bg-gray-500 hover:bg-slate-600 p-0 text-lg text-black "
+          id="overView"
+          className={`${buttonBaseStyle} ${ weatherView === "overView" ? "bg-gray-200" : ""}`}
           onClick={(e) => setWeatherView(e.currentTarget.id)}
         >
           <svg
@@ -52,7 +56,7 @@ const SideTab = () => {
         </Button>
         <Button
           id="table"
-          className="h-16 w-16 rounded-br-lg border border-white bg-gray-500 hover:bg-slate-600 px-4 py-2 text-lg text-black"
+          className={`${buttonBaseStyle} ${ weatherView === "table" ? "bg-gray-200" : ""}`}
           onClick={(e) => setWeatherView(e.currentTarget.id)}
         >
           Table

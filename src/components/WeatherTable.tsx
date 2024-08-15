@@ -66,7 +66,7 @@ const WeatherTable = (props : Props) => {
     })
     return (
         <div className="p-2">
-            <table>
+            <table className="bg-gray-600">
             <thead className=" justify-center">
                 {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
