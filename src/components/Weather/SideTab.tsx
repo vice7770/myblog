@@ -2,15 +2,16 @@
 
 import React from "react";
 import { Button } from "~/components/ui/button";
-import { useWeatherActions } from "~/stores/weatherSection";
+import { useWeatherActions, useWeatherView } from "~/stores/weatherSection";
 
 const SideTab = () => {
-    const { setOverViewToggled } = useWeatherActions();
+    const { setWeatherView, useWeatherView } = useWeatherActions();
     return (
       <div className="flex h-full flex-col justify-start">
         <Button
+          id="overview"
           className="h-16 w-16 rounded-br-lg border border-white bg-gray-500 hover:bg-slate-600 p-0 text-lg text-black "
-          onClick={() => setOverViewToggled()}
+          onClick={(e) => setWeatherView(e.currentTarget.id)}
         >
           <svg
             viewBox="0 0 1024 1024"
@@ -49,7 +50,13 @@ const SideTab = () => {
             </g>
           </svg>
         </Button>
-        <Button className="h-16 w-16 rounded-br-lg border border-white bg-gray-500 hover:bg-slate-600 px-4 py-2 text-lg text-black"></Button>
+        <Button
+          id="table"
+          className="h-16 w-16 rounded-br-lg border border-white bg-gray-500 hover:bg-slate-600 px-4 py-2 text-lg text-black"
+          onClick={(e) => setWeatherView(e.currentTarget.id)}
+        >
+          Table
+        </Button>
       </div>
     );
 };

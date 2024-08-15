@@ -25,8 +25,8 @@ const WeatherTable = (props : Props) => {
         const result = weatherData.map((weather) => {
             return {
                 name: weather.name,
-                temperature: weather.metadata.daily.temperature2mMin[0] ?? 0,
-                windspeed: weather.metadata.daily.windSpeed10mMax[0] ?? 0,
+                temperature: weather.metadata.daily.temperature2mMin[0]?.toPrecision(3) ?? 0,
+                windspeed: weather.metadata.daily.windSpeed10mMax[0]?.toPrecision(2) ?? 0,
                 humidity: weather.metadata.current.relativeHumidity2m,
                 description: 1,
             }
@@ -55,7 +55,7 @@ const WeatherTable = (props : Props) => {
         }),
         columnHelper.accessor('description', {
             cell: info => info.renderValue(),
-            header: () => <span>Temperature</span>,
+            header: () => <span>Description</span>,
         }),
       ]
     }, [weatherData]);
@@ -67,11 +67,11 @@ const WeatherTable = (props : Props) => {
     return (
         <div className="p-2">
             <table>
-            <thead>
+            <thead className=" justify-center">
                 {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
-                    <th key={header.id}>
+                    <th className="p-2 text-center" key={header.id}>
                         {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -87,7 +87,7 @@ const WeatherTable = (props : Props) => {
                 {table.getRowModel().rows.map(row => (
                 <tr key={row.id}>
                     {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>
+                    <td className="text-center p-1" key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                     ))}
