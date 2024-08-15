@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Hero = () => {
     const sideImage = "/hero/att.woPv_TnHtpckDhIgqNCyK6KWNJzbr9cd4Vtkv3E7FMU.jpg";
   return (
-    <section className="w-full rounded-xl border-4 border-blue-400 flex justify-center p-xl mt-[76px]">
+    <section className="w-1/2 lg:h-[400px] rounded-xl border-4 border-blue-400 flex justify-center p-xl mt-[76px] mb-[600px]">
       <div className="hidden lg:flex lg:pl-xl lg:justify-center lg:items-center lg:gap-[64px] lg:flex-1 lg:w-full max-lg:flex-col p-6">
         <div
           id="left-side"
