@@ -65,13 +65,13 @@ const WeatherTable = (props : Props) => {
         getCoreRowModel: getCoreRowModel(),
     })
     return (
-        <div className="p-2">
+        <div className="flex w-full h-full overflow-auto">
             <table className="bg-gray-600">
             <thead className=" justify-center">
                 {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
-                    <th className="p-2 text-center" key={header.id}>
+                    <th className="p-1 text-center" key={header.id}>
                         {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -87,7 +87,7 @@ const WeatherTable = (props : Props) => {
                 {table.getRowModel().rows.map(row => (
                 <tr key={row.id}>
                     {row.getVisibleCells().map(cell => (
-                    <td className="text-center p-1" key={cell.id}>
+                    <td className="text-center" key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                     ))}

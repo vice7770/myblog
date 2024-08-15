@@ -55,7 +55,7 @@ export function WeatherChart2(props : Props) {
   ];
   const tempIsUp = averageTemp > averageTempYesterday;
   return (
-    <Card className="flex flex-col w-[800px]">
+    <Card className="flex flex-col w-full h-full">
       <CardHeader>
         <CardTitle>Weather</CardTitle>
         <CardDescription>Lets take a look at weather</CardDescription>
@@ -96,7 +96,7 @@ export function WeatherChart2(props : Props) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
+      <CardFooter className="flex-col items-start justify-center gap-2 text-sm h-full">
         <div className="flex gap-2 font-medium leading-none">
           {"Today the temperature " + (tempIsUp ? "increased" : "decreased")} 
           {tempIsUp ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
