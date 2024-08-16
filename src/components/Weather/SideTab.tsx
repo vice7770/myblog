@@ -14,7 +14,7 @@ const SideTab = () => {
       <div className="flex h-full flex-col justify-start">
         <Button
           id="overView"
-          className={`${buttonBaseStyle} ${ weatherView === "overView" ? "bg-gray-200" : ""}`}
+          className={`rounded-tr-3xl ${buttonBaseStyle} ${ weatherView === "overView" ? "bg-gray-200" : ""}`}
           onClick={(e) => setWeatherView(e.currentTarget.id)}
         >
           <svg

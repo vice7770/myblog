@@ -55,7 +55,7 @@ export function WeatherChart2(props : Props) {
   ];
   const tempIsUp = averageTemp > averageTempYesterday;
   return (
-    <Card className="flex flex-col w-full h-full">
+    <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
       <CardHeader>
         <CardTitle>Weather</CardTitle>
         <CardDescription>Lets take a look at weather</CardDescription>

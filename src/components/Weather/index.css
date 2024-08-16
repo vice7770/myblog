@@ -1,0 +1,49 @@
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+td {
+    border-style: none solid solid none;
+    padding: 10px;
+}
+
+/* Apply border-radius to all rows */
+tr:nth-child(odd) td:first-child {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+tr:nth-child(odd) td:last-child {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+tr:nth-child(even) td:first-child {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+tr:nth-child(even) td:last-child {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+/* Specific styles for the first and last rows */
+tr:first-child td:first-child {
+    border-top-left-radius: 30px;
+}
+tr:first-child td:last-child {
+    border-top-right-radius: 30px;
+}
+tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+tr:first-child td {
+    border-top-style: solid;
+}
+tr td:first-child {
+    border-left-style: solid;
+}

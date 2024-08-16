@@ -2,6 +2,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, ColumnDef, CellContext, Cell, Row, HeaderGroup } from "@tanstack/react-table";
 import { type WeatherData } from "~/api/weather/graph/types";
+import { openSansCell, openSansHeader } from "~/app/fonts";
+import "./index.css";
 
 interface Props {
     weatherData: WeatherData[];
@@ -40,13 +42,13 @@ const WeatherTable = (props : Props) => {
         return [
         columnHelper.accessor('name', {
             cell: info => info.getValue(),
-            header: () => <span>Name</span>,}),
+            header: () => <span>City</span>,}),
         columnHelper.accessor('temperature', {
-            cell: info => <i>{info.getValue()}</i>,
+            cell: info => info.getValue(),
             header: () => <span>Temperature</span>,
         }),
         columnHelper.accessor('windspeed', {
-            cell: info => info.renderValue(),
+            cell: info => <span>{info.renderValue() + " m/s"}</span>,
             header: () => <span>Wind Speed</span>,          
         }),
         columnHelper.accessor('humidity', {
@@ -59,25 +61,31 @@ const WeatherTable = (props : Props) => {
         }),
       ]
     }, [weatherData]);
+
+    const firstLastCellIds = useMemo(() => [
+        columns[0]?.id ?? '',
+        columns[columns.length - 1]?.id ?? '',
+    ],[weatherData]); 
+
     const table = useReactTable({
         data: formattedData,
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
     return (
-        <div className="flex w-full h-full overflow-auto">
-            <table className="bg-gray-600">
-            <thead className=" justify-center">
+        <div className="flex w-full h-full overflow-auto rounded-3xl rounded-tr-none border-4">
+            <table className="w-full bg-cyan-500 border-separate border-spacing-0 p-4">
+            <thead className="justify-center">
                 {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
-                    <th className="p-1 text-center" key={header.id}>
+                    <th className={`p-1 text-white text-center + ${openSansHeader.className}`}  key={header.id}>
                         {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
-                            )}
+                        )}
                     </th>
                     ))}
                 </tr>
@@ -85,9 +93,9 @@ const WeatherTable = (props : Props) => {
             </thead>
             <tbody>
                 {table.getRowModel().rows.map(row => (
-                <tr key={row.id}>
+                <tr key={row.id} className="hover:bg-cyan-400">
                     {row.getVisibleCells().map(cell => (
-                    <td className="text-center" key={cell.id}>
+                    <td className={`text-white text-center ${openSansCell.className}`} key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                     ))}
