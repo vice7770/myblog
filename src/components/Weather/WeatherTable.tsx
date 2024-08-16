@@ -44,7 +44,7 @@ const WeatherTable = (props : Props) => {
             cell: info => info.getValue(),
             header: () => <span>City</span>,}),
         columnHelper.accessor('temperature', {
-            cell: info => info.getValue(),
+            cell: info => <span>{info.getValue() + "°C"}</span>,
             header: () => <span>Temperature</span>,
         }),
         columnHelper.accessor('windspeed', {
@@ -62,18 +62,13 @@ const WeatherTable = (props : Props) => {
       ]
     }, [weatherData]);
 
-    const firstLastCellIds = useMemo(() => [
-        columns[0]?.id ?? '',
-        columns[columns.length - 1]?.id ?? '',
-    ],[weatherData]); 
-
     const table = useReactTable({
         data: formattedData,
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
     return (
-        <div className="flex w-full h-full overflow-auto rounded-3xl rounded-tr-none border-4">
+        <div className="flex w-full h-full overflow-auto rounded-3xl rounded-tr-none rounded-br-none border-4">
             <table className="w-full bg-cyan-500 border-separate border-spacing-0 p-4">
             <thead className="justify-center">
                 {table.getHeaderGroups().map(headerGroup => (
