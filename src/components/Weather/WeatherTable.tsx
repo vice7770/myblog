@@ -4,9 +4,7 @@ import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, ColumnD
 import { WeatherMetaData, type WeatherData } from "~/api/weather/graph/types";
 import { openSansCell, openSansHeader } from "~/app/fonts";
 import "./index.css";
-import { get } from "http";
 import { Clouds, FullRain, PartialRain, Sun, SunCloud } from "public/weather/icons";
-import { metadata } from "~/app/layout";
 
 interface Props {
     weatherData: WeatherData[];
@@ -47,11 +45,10 @@ const WeatherTable = (props : Props) => {
             return [];
         }
         const result = weatherData.map((weather) => {
-            console.log(weather.name, weather.metadata.hourly.precipitation[0]);
             return {
                 name: weather.name,
                 temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
-                windspeed: weather.metadata.daily.windSpeed10mMax[0]?.toPrecision(2) ?? 0,
+                windspeed: weather.metadata.current.wind_speed_10m.toPrecision(2) ?? 0,
                 humidity: weather.metadata.current.relativeHumidity2m.toPrecision(2),
                 description: getWeatherDescription(weather.metadata),
             }
@@ -71,7 +68,7 @@ const WeatherTable = (props : Props) => {
             header: () => <span>Temperature</span>,
         }),
         columnHelper.accessor('windspeed', {
-            cell: info => <span>{info.renderValue() + " m/s"}</span>,
+            cell: info => <span>{info.renderValue() + " k/h"}</span>,
             header: () => <span>Wind Speed</span>,          
         }),
         columnHelper.accessor('humidity', {

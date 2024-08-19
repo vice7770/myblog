@@ -18,6 +18,7 @@ export interface WeatherMetaData {
     time: string;
     cloudCover: number;
     relativeHumidity2m: number;
+    wind_speed_10m: number; 
   };
   hourly: {
     time: string[];
