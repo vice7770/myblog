@@ -19,7 +19,15 @@ export interface WeatherMetaData {
     cloudCover: number;
     relativeHumidity2m: number;
   };
+  hourly: {
+    time: string[];
+    precipitation: PrecipitationData;
+  }
 };
+
+interface PrecipitationData {
+  [key: string]: number;
+}
 
 export interface WeatherData {
   name: string;

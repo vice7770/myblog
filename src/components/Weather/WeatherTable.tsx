@@ -6,6 +6,7 @@ import { openSansCell, openSansHeader } from "~/app/fonts";
 import "./index.css";
 import { get } from "http";
 import { Clouds, FullRain, PartialRain, Sun, SunCloud } from "public/weather/icons";
+import { metadata } from "~/app/layout";
 
 interface Props {
     weatherData: WeatherData[];
@@ -21,7 +22,7 @@ interface WeatherTable {
 
 const WeatherTable = (props : Props) => {
     const getWeatherDescription = (metaData: WeatherMetaData) => {
-        if(metaData.current.cloudCover){
+        if(metaData.current.cloudCover && metaData.hourly.precipitation[0] && metaData.hourly.precipitation[0] === 0){
             if(metaData.current.cloudCover < 0.2){
                 return <Sun/>;
             } else if(metaData.current.cloudCover < 0.6){
@@ -30,8 +31,8 @@ const WeatherTable = (props : Props) => {
                 return <Clouds/>;
             }
         }
-        if(metaData.current.rain){
-            if(metaData.current.rain > 0.5){
+        if(metaData.hourly.precipitation[0] && metaData.hourly.precipitation[0] > 0){
+            if(metaData.hourly.precipitation[0] > 4){
                 return <FullRain/>;
             }
             return <PartialRain/>;
@@ -46,6 +47,7 @@ const WeatherTable = (props : Props) => {
             return [];
         }
         const result = weatherData.map((weather) => {
+            console.log(weather.name, weather.metadata.hourly.precipitation[0]);
             return {
                 name: weather.name,
                 temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
