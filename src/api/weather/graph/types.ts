@@ -12,6 +12,8 @@ export interface WeatherMetaData {
     temperature2mMin: Record<string, number>;
   };
   current: {
+    temperature2m: number;
+    precipitation: number;
     rain: number;
     time: string;
     cloudCover: number;

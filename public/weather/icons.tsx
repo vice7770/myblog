@@ -46,7 +46,7 @@ export const Sun = () => {
     <svg
       viewBox="0 0 1024 1024"
       fill="#ffeb66"
-      className="flex h-full w-full"
+      className="flex h-12 w-12"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       stroke="#ffeb66"
@@ -98,8 +98,8 @@ export const Overview = () => {
 export const Clouds = () => {
   const SVGIcon = (
     <svg
-      height="200px"
-      width="200px"
+      height="54px"
+      width="54px"
       version="1.1"
       id="_x32_"
       xmlns="http://www.w3.org/2000/svg"

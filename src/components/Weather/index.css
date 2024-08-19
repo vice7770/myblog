@@ -10,29 +10,29 @@ td {
 
 /* Apply border-radius to all rows */
 tr:nth-child(odd) td:first-child {
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
 tr:nth-child(odd) td:last-child {
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
 
 tr:nth-child(even) td:first-child {
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
 tr:nth-child(even) td:last-child {
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
 
 /* Specific styles for the first and last rows */
 tr:first-child td:first-child {
-    border-top-left-radius: 30px;
+    border-top-left-radius: 50px;
 }
 tr:first-child td:last-child {
-    border-top-right-radius: 30px;
+    border-top-right-radius: 50px;
 }
 tr:last-child td:first-child {
     border-bottom-left-radius: 10px;

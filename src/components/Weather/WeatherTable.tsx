@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, ColumnDef, CellContext, Cell, Row, HeaderGroup } from "@tanstack/react-table";
-import { type WeatherData } from "~/api/weather/graph/types";
+import { WeatherMetaData, type WeatherData } from "~/api/weather/graph/types";
 import { openSansCell, openSansHeader } from "~/app/fonts";
 import "./index.css";
+import { get } from "http";
+import { Clouds, FullRain, PartialRain, Sun, SunCloud } from "public/weather/icons";
 
 interface Props {
     weatherData: WeatherData[];
@@ -18,6 +20,25 @@ interface WeatherTable {
 }
 
 const WeatherTable = (props : Props) => {
+    const getWeatherDescription = (metaData: WeatherMetaData) => {
+        if(metaData.current.cloudCover){
+            if(metaData.current.cloudCover < 0.2){
+                return <Sun/>;
+            } else if(metaData.current.cloudCover < 0.6){
+                return <SunCloud/>;
+            } else {
+                return <Clouds/>;
+            }
+        }
+        if(metaData.current.rain){
+            if(metaData.current.rain > 0.5){
+                return <FullRain/>;
+            }
+            return <PartialRain/>;
+        }
+        return <Sun/>;
+    }
+
     const { weatherData } = props;
     const formattedData = useMemo(() => {
         // const result = [];
@@ -27,10 +48,10 @@ const WeatherTable = (props : Props) => {
         const result = weatherData.map((weather) => {
             return {
                 name: weather.name,
-                temperature: weather.metadata.daily.temperature2mMin[0]?.toPrecision(3) ?? 0,
+                temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
                 windspeed: weather.metadata.daily.windSpeed10mMax[0]?.toPrecision(2) ?? 0,
-                humidity: weather.metadata.current.relativeHumidity2m,
-                description: 1,
+                humidity: weather.metadata.current.relativeHumidity2m.toPrecision(2),
+                description: getWeatherDescription(weather.metadata),
             }
         });
         return result;
@@ -56,7 +77,7 @@ const WeatherTable = (props : Props) => {
             header: () => <span>Humidity</span>,
         }),
         columnHelper.accessor('description', {
-            cell: info => info.renderValue(),
+            cell: info => <div className="flex justify-center items-center w-14 h-14 ml-7">{info.renderValue()}</div>,
             header: () => <span>Description</span>,
         }),
       ]
@@ -90,7 +111,7 @@ const WeatherTable = (props : Props) => {
                 {table.getRowModel().rows.map(row => (
                 <tr key={row.id} className="hover:bg-cyan-400">
                     {row.getVisibleCells().map(cell => (
-                    <td className={`text-white text-center ${openSansCell.className}`} key={cell.id}>
+                    <td className={` text-white text-center ${openSansCell.className}`} key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                     ))}
