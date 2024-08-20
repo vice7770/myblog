@@ -6,6 +6,12 @@ import { openSansCell, openSansHeader } from "~/app/fonts";
 import "./index.css";
 import { Clouds, FullRain, PartialRain, Sun, SunCloud } from "public/weather/icons";
 
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "~/components/ui/hover-card";
+
 interface Props {
     weatherData: WeatherData[];
 }
@@ -14,6 +20,10 @@ interface WeatherTable {
     name: string;
     temperature: number;
     windspeed: number;
+    dailySpeedRange: {
+        min: number;
+        max: number;
+    };
     humidity: number;
     description: number;
 }
@@ -30,9 +40,9 @@ const WeatherTable = (props : Props) => {
             }
         }
         if(metaData.hourly.precipitation[0] && metaData.hourly.precipitation[0] > 0){
-            if(metaData.hourly.precipitation[0] > 4){
+            if(metaData.hourly.precipitation[0] > 4)
                 return <FullRain/>;
-            }
+            
             return <PartialRain/>;
         }
         return <Sun/>;
@@ -49,6 +59,10 @@ const WeatherTable = (props : Props) => {
                 name: weather.name,
                 temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
                 windspeed: weather.metadata.current.wind_speed_10m.toPrecision(2) ?? 0,
+                dailySpeedRange: {
+                    min: weather.metadata.daily.windSpeed10mMin[0].toPrecision(2) ?? 0,
+                    max: weather.metadata.daily.windSpeed10mMax[0].toPrecision(2) ?? 0,
+                },
                 humidity: weather.metadata.current.relativeHumidity2m.toPrecision(2),
                 description: getWeatherDescription(weather.metadata),
             }
@@ -68,7 +82,17 @@ const WeatherTable = (props : Props) => {
             header: () => <span>Temperature</span>,
         }),
         columnHelper.accessor('windspeed', {
-            cell: info => <span>{info.renderValue() + " k/h"}</span>,
+            cell: info => {
+            console.log(info.cell.column.id, info.cell.row.id);
+            return <HoverCard>
+                <HoverCardTrigger>
+                    <span>{info.getValue() + "m/s"}</span>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                    <span>Gust Daily Range: {formattedData[info.cell.row.index]?.dailySpeedRange.min} - {formattedData[info.cell.row.index]?.dailySpeedRange.max}</span>
+                </HoverCardContent>
+            </HoverCard>
+            },
             header: () => <span>Wind Speed</span>,          
         }),
         columnHelper.accessor('humidity', {

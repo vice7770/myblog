@@ -6,10 +6,11 @@ export function getWeatherStatus(weather : WeatherMetaData[]) {
         cool: 0,
         cold: 0,
     }
+    
     weather?.forEach((weather) => {
-        if (weather.daily.temperature2mMin[1] > 30) {
+        if (weather.daily.temperature2mMin[0] > 25) {
             weatherStatus.hot++;
-        } else if (weather.daily.temperature2mMin[0] >= 20 && weather.daily.temperature2mMin[0] <= 30) { // 20°C to Fahrenheit
+        } else if (weather.daily.temperature2mMin[0] >= 15 && weather.daily.temperature2mMin[0] <= 25) { // 20°C to Fahrenheit
             weatherStatus.cool++;
         } else {
             weatherStatus.cold++;

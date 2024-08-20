@@ -6,6 +6,7 @@ export interface WeatherMetaData {
     uvIndexMax: Record<string, number>;
     weatherCode: Record<string, number>;
     windSpeed10mMax: Record<string, number>;
+    windSpeed10mMin: Record<string, number>;
     daylightDuration: null | Record<string, number>;
     precipitationSum: Record<string, number>;
     temperature2mMax: Record<string, number>;
