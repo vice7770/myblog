@@ -1,12 +1,13 @@
 "use client"
+import { useMemo } from 'react';
 import { useWeatherView } from '~/stores/weatherSection';
-import WeatherTable from './WeatherTable';
+import WeatherTable from './Weather/WeatherTable';
 import SideTab from './Weather/SideTab';
-import dynamic from 'next/dynamic';
-import { useEffect, useMemo } from 'react';
-import { type WeatherData } from "~/api/weather/graph/types";
 
-const WeatherChart2 = dynamic(() => import('./Weather/WeatherChart2'), { ssr: false });
+import { type WeatherData } from "~/api/weather/graph/types";
+import WeatherChart2 from './Weather/WeatherChart2';
+
+// const WeatherChart2 = dynamic(() => import('./Weather/WeatherChart2'), { ssr: false });
 
 interface Props {
     weatherStatus: {
@@ -29,7 +30,6 @@ const WeatherComponent = (props: Props) => {
                 averageTemp={averageTemp}
                 averageTempYesterday={averageTempYesterday}
             />
-        
         }    
         else  if(isOverViewToggled === "table") return <WeatherTable weatherData={weatherData} />
         else {
@@ -41,7 +41,7 @@ const WeatherComponent = (props: Props) => {
         }
     },[isOverViewToggled])
     return (
-        <div className='flex h-full justify-center items-center border-4'>
+        <div className='flex justify-center items-center w-[800px] h-[640px] bg-white rounded-3xl'>
             <>
                 {memoChartSection}
                 <SideTab />
