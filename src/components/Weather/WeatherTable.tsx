@@ -30,24 +30,21 @@ interface WeatherTable {
 
 const WeatherTable = (props : Props) => {
     const getWeatherDescription = (metaData: WeatherMetaData) => {
-        if(metaData.current.cloudCover && metaData.hourly.precipitation[0] && metaData.hourly.precipitation[0] === 0){
-            if(metaData.current.cloudCover < 0.2){
-                return <Sun/>;
-            } else if(metaData.current.cloudCover < 0.6){
+        if(metaData.current.cloudCover > 0 && metaData.current.precipitation === 0){
+            if(metaData.current.cloudCover < 60){
                 return <SunCloud/>;
             } else {
                 return <Clouds/>;
             }
         }
-        if(metaData.hourly.precipitation[0] && metaData.hourly.precipitation[0] > 0){
-            if(metaData.hourly.precipitation[0] > 4)
+        else if(metaData.current.precipitation > 0){
+            if(metaData.current.precipitation > 4)
                 return <FullRain/>;
             
             return <PartialRain/>;
         }
         return <Sun/>;
     }
-
     const { weatherData } = props;
     const formattedData = useMemo(() => {
         // const result = [];
@@ -58,7 +55,7 @@ const WeatherTable = (props : Props) => {
             return {
                 name: weather.name,
                 temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
-                windspeed: weather.metadata.current.wind_speed_10m.toPrecision(2) ?? 0,
+                windspeed: weather.metadata.current.windSpeed10m.toPrecision(2) ?? 0,
                 dailySpeedRange: {
                     min: weather.metadata.daily.windSpeed10mMin[0].toPrecision(2) ?? 0,
                     max: weather.metadata.daily.windSpeed10mMax[0].toPrecision(2) ?? 0,
@@ -83,7 +80,6 @@ const WeatherTable = (props : Props) => {
         }),
         columnHelper.accessor('windspeed', {
             cell: info => {
-            console.log(info.cell.column.id, info.cell.row.id);
             return <HoverCard>
                 <HoverCardTrigger>
                     <span>{info.getValue() + "m/s"}</span>

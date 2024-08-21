@@ -17,19 +17,16 @@ export interface WeatherMetaData {
     precipitation: number;
     rain: number;
     time: string;
-    cloudCover: number;
+    cloudCover: number; // daily cloud cover seems to not be working
     relativeHumidity2m: number;
-    wind_speed_10m: number; 
+    windSpeed10m: number; 
   };
   hourly: {
     time: string[];
-    precipitation: PrecipitationData;
+    precipitation: Record<string, number>;
+    cloudCover: Record<string, number>;  
   }
 };
-
-interface PrecipitationData {
-  [key: string]: number;
-}
 
 export interface WeatherData {
   name: string;
