@@ -20,6 +20,7 @@ import {
 export const createTable = pgTableCreator((name) => `myblog_${name}`);
 export const createWeatherTable = pgTableCreator((name) => `myblog_${name}`);
 export const createWeatherPreviousWeatherTable = pgTableCreator((name) => `myblog_${name}`);
+export const createWeatherPrevious2MonthTable = pgTableCreator((name) => `myblog_${name}`);
 
 export const posts = createTable(
   "post",
@@ -72,4 +73,13 @@ export const weatherPreviousDay = createWeatherPreviousWeatherTable(
   (example) => ({
     nameIndex: index("weatherpreviousday_idx").on(example.name),
   })
+);
+
+export const weatherPrevious2Months = createWeatherPrevious2MonthTable(
+  "prevmonths",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).unique(),
+    metadata: jsonb("metadata").default(sql`'{}'`),
+  },
 );
