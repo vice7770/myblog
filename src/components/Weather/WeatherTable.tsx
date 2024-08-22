@@ -28,6 +28,19 @@ interface WeatherTable {
     description: number;
 }
 
+const CellCard = (props: { trigger: React.ReactNode, Content: React.ReactNode }) => {
+    return (
+        <HoverCard>
+            <HoverCardTrigger>
+                {props.trigger}
+            </HoverCardTrigger>
+            <HoverCardContent>
+                {props.Content}
+            </HoverCardContent>
+        </HoverCard>
+    );
+}
+
 const WeatherTable = (props : Props) => {
     const getWeatherDescription = (metaData: WeatherMetaData) => {
         if(metaData.current.cloudCover > 0 && metaData.current.precipitation === 0){
@@ -73,21 +86,17 @@ const WeatherTable = (props : Props) => {
         return [
         columnHelper.accessor('name', {
             cell: info => info.getValue(),
-            header: () => <span>City</span>,}),
+            header: () => <span>City</span>,
+        }),
         columnHelper.accessor('temperature', {
             cell: info => <span>{info.getValue() + "°C"}</span>,
             header: () => <span>Temperature</span>,
         }),
         columnHelper.accessor('windspeed', {
             cell: info => {
-            return <HoverCard>
-                <HoverCardTrigger>
-                    <span>{info.getValue() + "m/s"}</span>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                    <span>Gust Daily Range: {formattedData[info.cell.row.index]?.dailySpeedRange.min} - {formattedData[info.cell.row.index]?.dailySpeedRange.max}</span>
-                </HoverCardContent>
-            </HoverCard>
+                const trigger = <span>{info.getValue() + "m/s"}</span>;
+                const content = <span>Gust Daily Range: {formattedData[info.cell.row.index]?.dailySpeedRange.min} - {formattedData[info.cell.row.index]?.dailySpeedRange.max}</span>;
+                return <CellCard trigger={trigger} Content={content} />; 
             },
             header: () => <span>Wind Speed</span>,          
         }),
@@ -96,7 +105,11 @@ const WeatherTable = (props : Props) => {
             header: () => <span>Humidity</span>,
         }),
         columnHelper.accessor('description', {
-            cell: info => <div className="flex justify-center items-center w-14 h-14 ml-7">{info.renderValue()}</div>,
+            cell: info => {
+                const trigger = <div className="flex justify-center items-center w-14 h-14 ml-7">{info.renderValue()}</div>;
+                const content = <span>this is content</span>;
+                return <CellCard trigger={trigger} Content={content} />;
+            },  
             header: () => <span>Description</span>,
         }),
       ]
