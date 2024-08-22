@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, ColumnDef, CellContext, Cell, Row, HeaderGroup } from "@tanstack/react-table";
+import React, { useMemo, useState } from "react";
+import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, ColumnDef, CellContext, Cell, Row, HeaderGroup, SortingState, getSortedRowModel, SortingFn } from "@tanstack/react-table";
 import { WeatherMetaData, type WeatherData } from "~/api/weather/graph/types";
 import { openSansCell, openSansHeader } from "~/app/fonts";
 import "./index.css";
@@ -25,7 +25,7 @@ interface WeatherTable {
         max: number;
     };
     humidity: number;
-    description: number;
+    description: React.JSX.Element;
 }
 
 const CellCard = (props: { trigger: React.ReactNode, Content: React.ReactNode }) => {
@@ -40,6 +40,26 @@ const CellCard = (props: { trigger: React.ReactNode, Content: React.ReactNode })
         </HoverCard>
     );
 }
+
+const sortByWeatherQuality: SortingFn<WeatherTable> = ((rowA, rowB) => { 
+    const descriptionA = rowA.original.description.type.name;
+    const descriptionB = rowB.original.description.type.name;
+    const customOrder = ['Sun', 'SunCloud', 'Clouds', 'PartialRain', 'FullRain'];
+    return customOrder.indexOf(descriptionA) - customOrder.indexOf(descriptionB);
+});
+
+const getDescriptionContent = ((props : {info: CellContext<WeatherTable, React.JSX.Element>, weatherData: WeatherData[]}) => {
+    const { info, weatherData } = props;
+    const rowIndexOfCell = info.row.index;
+    const typeName = info.cell.getValue().type.name;
+    const isSun = typeName === 'Sun';
+    if(isSun) return <span>Its a sunny day, no clouds or rain 😎</span>
+    else{
+        const rainPerc = weatherData[rowIndexOfCell].metadata.current.precipitation;
+        const cloudCover = weatherData[rowIndexOfCell].metadata.current.cloudCover;
+        return <span>Cloud Cover: {cloudCover}%, Rain: {rainPerc}mm</span>
+    }
+})
 
 const WeatherTable = (props : Props) => {
     const getWeatherDescription = (metaData: WeatherMetaData) => {
@@ -59,6 +79,12 @@ const WeatherTable = (props : Props) => {
         return <Sun/>;
     }
     const { weatherData } = props;
+    
+    const [sorting, setSorting] = useState<SortingState>([{
+        "id": "temperature",
+        "desc": true
+    }])
+    
     const formattedData = useMemo(() => {
         // const result = [];
         if (!weatherData) {
@@ -81,7 +107,7 @@ const WeatherTable = (props : Props) => {
     }, [weatherData]);
 
     const columnHelper = createColumnHelper<WeatherTable>()
-
+    
     const columns = useMemo(() => {
         return [
         columnHelper.accessor('name', {
@@ -107,10 +133,17 @@ const WeatherTable = (props : Props) => {
         columnHelper.accessor('description', {
             cell: info => {
                 const trigger = <div className="flex justify-center items-center w-14 h-14 ml-7">{info.renderValue()}</div>;
-                const content = <span>this is content</span>;
+                // const content = <span>this is content</span>;
+                const content = getDescriptionContent({info, weatherData});
                 return <CellCard trigger={trigger} Content={content} />;
             },  
-            header: () => <span>Description</span>,
+            header: () => {
+                const trigger = <span>Description</span>;
+                const content = <span>This will sort from weather quality</span>;
+                return <CellCard trigger={trigger} Content={content} />;
+            },
+            sortingFn: sortByWeatherQuality,
+            invertSorting: true,
         }),
       ]
     }, [weatherData]);
@@ -119,6 +152,11 @@ const WeatherTable = (props : Props) => {
         data: formattedData,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        state: {
+            sorting,
+        },
     })
     return (
         <div className="flex w-full h-full overflow-auto rounded-3xl rounded-tr-none rounded-br-none border-4">
@@ -128,11 +166,24 @@ const WeatherTable = (props : Props) => {
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
                     <th className={`p-1 text-white text-center + ${openSansHeader.className}`}  key={header.id}>
-                        {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
+                        {header.isPlaceholder ? null : (
+                            <div
+                                className={
+                                header.column.getCanSort()
+                                    ? 'cursor-pointer select-none'
+                                    : ''
+                                }
+                                onClick={header.column.getToggleSortingHandler()}
+                            >
+                                {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                                )}
+                                {{
+                                asc: ' 🔼',
+                                desc: ' 🔽',
+                                }[header.column.getIsSorted() as string] ?? null}
+                            </div>
                         )}
                     </th>
                     ))}
