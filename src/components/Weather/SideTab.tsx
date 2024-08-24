@@ -30,6 +30,13 @@ const SideTab = () => {
         >
           <SunCloud/>     
         </Button>
+        <Button
+          id="broadcast"
+          className={`${buttonBaseStyle} ${ weatherView === "table" ? "bg-gray-200" : ""}`}
+          onClick={(e) => setWeatherView(e.currentTarget.id)}
+        >
+          <SunCloud/>
+        </Button>
       </div>
     );
 };

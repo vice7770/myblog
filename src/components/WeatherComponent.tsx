@@ -4,8 +4,9 @@ import { useWeatherView } from '~/stores/weatherSection';
 import WeatherTable from './Weather/WeatherTable';
 import SideTab from './Weather/SideTab';
 
-import { type WeatherData } from "~/api/weather/graph/types";
+import { type PrevWeatherData, type WeatherData } from "~/api/weather/graph/types";
 import WeatherChart2 from './Weather/WeatherChart2';
+import WeatherBroadCast from './Weather/WeatherBroadCast';
 
 // const WeatherChart2 = dynamic(() => import('./Weather/WeatherChart2'), { ssr: false });
 
@@ -18,10 +19,11 @@ interface Props {
     averageTemp: number
     averageTempYesterday: number
     weatherData: WeatherData[]
+    weather2PrevMonths: PrevWeatherData[]
 }
 
 const WeatherComponent = (props: Props) => {
-    const { weatherStatus, averageTemp, averageTempYesterday, weatherData} = props;
+    const { weatherStatus, averageTemp, averageTempYesterday, weatherData, weather2PrevMonths} = props;
     const isOverViewToggled = useWeatherView();
     const memoChartSection = useMemo(()=> {
         if(isOverViewToggled === "overView") {
@@ -31,7 +33,8 @@ const WeatherComponent = (props: Props) => {
                 averageTempYesterday={averageTempYesterday}
             />
         }    
-        else  if(isOverViewToggled === "table") return <WeatherTable weatherData={weatherData} />
+        else if(isOverViewToggled === "table") return <WeatherTable weatherData={weatherData} />
+        else if(isOverViewToggled === "broadcast") return <WeatherBroadCast weatherData={weather2PrevMonths}/>
         else {
             return <WeatherChart2
                 weatherStatus={weatherStatus}

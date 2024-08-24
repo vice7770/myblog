@@ -28,7 +28,18 @@ export interface WeatherMetaData {
   }
 };
 
+export interface PrevWeatherMetaData {
+  daily: {
+    time: Record<string, string>;
+    temperature2mMax: Record<string, number>;
+  }
+}
+
 export interface WeatherData {
   name: string;
   metadata: WeatherMetaData;
+};
+export interface PrevWeatherData {
+  name: string;
+  metadata: PrevWeatherMetaData;
 };

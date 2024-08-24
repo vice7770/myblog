@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 
 import { getWeatherAverageTemp, getWeatherAverageTempYesterday, getWeatherStatus } from "~/utils/weather/weather";
-import { type WeatherData } from "~/api/weather/graph/types";
-import { getWeatherMetaData } from "~/api/weather/graph/weather";
+import { type WeatherData, type PrevWeatherData } from "~/api/weather/graph/types";
+import { getWeatherMetaData, getWeatherPrev2Months } from "~/api/weather/graph/weather";
 import WeatherComponent from "./WeatherComponent";
 
 const FeatureSection = async () => {
     const weatherData : WeatherData[] = await getWeatherMetaData();
+    const weather2PrevMonths : PrevWeatherData[] = await getWeatherPrev2Months();
     const weatherStatus = getWeatherStatus(weatherData.map((weather) => weather.metadata));
     const averageTemp = getWeatherAverageTemp(weatherData.map((weather) => weather.metadata));
     const averageTempYesterday = getWeatherAverageTempYesterday(weatherData.map((weather) => weather.metadata));
@@ -24,6 +25,7 @@ const FeatureSection = async () => {
                             averageTemp={averageTemp} 
                             averageTempYesterday={averageTempYesterday}
                             weatherData={weatherData}                    
+                            weather2PrevMonths={weather2PrevMonths}
                         />    
                     </Suspense>
                 </div>
