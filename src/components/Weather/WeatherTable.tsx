@@ -57,7 +57,7 @@ const getDescriptionContent = ((props : {info: CellContext<WeatherTable, React.J
     else{
         const rainPerc = weatherData[rowIndexOfCell].metadata.current.precipitation;
         const cloudCover = weatherData[rowIndexOfCell].metadata.current.cloudCover;
-        return <span>Cloud Cover: {cloudCover}%, Rain: {rainPerc}mm</span>
+        return <span>Cloud Cover: {cloudCover}%, Rain: {rainPerc.toFixed(2)}mm</span>
     }
 })
 
