@@ -1,6 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
+import { useState } from "react"
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 import { type PrevWeatherData } from "~/api/weather/graph/types"
 
@@ -44,16 +45,13 @@ interface Props {
 
 export function WeatherBroadCast(props : Props) {
   const { weatherData } = props;
-  // const chartData = weatherData.map((data) => {
-  //   const arrTime = Object.values(data.metadata.daily?.time);
-  //   const arrTemp = Object.values(data.metadata.daily?.temperature2mMax);
-  //   return {
-  //     date: arrTime.map((time) => time.slice(0, 10)) ?? [],
-  //     temperature2mMax: arrTemp.map((temp) => temp.toPrecision(2)) ?? [],
-  //   }
-  // });
+  const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>("temperature2mMax");
   const arrTime = Object.values(weatherData[0].metadata.daily?.time);
   const arrTemp = Object.values(weatherData[0].metadata.daily?.temperature2mMax);
+  const firstMonth = new Date(arrTime[0]).getMonth();
+  const lastMonth = new Date(arrTime[arrTime.length - 1]).getMonth();
+  const currYear = new Date(arrTime[0]).getFullYear();
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const chartData = arrTime.map((time, index) => {
     return {
       date: time.slice(0, 10),
@@ -64,8 +62,8 @@ export function WeatherBroadCast(props : Props) {
   return (
     <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
       <CardHeader>
-        <CardTitle>Line Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>BroadCast of Previous 2 Months</CardTitle>
+        <CardDescription>{`${monthNames[firstMonth]} - ${monthNames[lastMonth]} ${currYear}`}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -80,17 +78,33 @@ export function WeatherBroadCast(props : Props) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              // dataKey="month"
               dataKey="date"
               tickLine={false}
               axisLine={false}
-              display="none"
-              // tickMargin={8}
-              // tickFormatter={(value) => value.slice(0, 1)}
+              tickMargin={8} 
+              minTickGap={32}
+              tickFormatter={(value) => {
+                const date = new Date(value)
+                return date.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })
+              }}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+             <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  className="w-[150px]"
+                  nameKey="views"
+                  labelFormatter={(value) => {
+                    return new Date(value).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  }}
+                />
+              }
             />
             <Line
               dataKey="temperature2mMax"
