@@ -1,6 +1,5 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { useState } from "react"
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 import { type PrevWeatherData } from "~/api/weather/graph/types"
@@ -19,6 +18,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "~/components/ui/chart"
+import { countriesConfig } from "~/utils/weather/countries"
+import DropdownCountries from "./BroadCastComponents/DropDownCountries"
+import { useCurrIdSelected } from "~/stores/weatherBroadCast"
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -28,16 +30,7 @@ const chartData = [
   { month: "June", desktop: 214, mobile: 140 },
 ]
 
-const chartConfig = {
-  temperature2mMax: {
-    label: "temperature2mMax",
-    color: "hsl(var(--chart-1))",
-  },
-  // mobile: {
-  //   label: "Mobile",
-  //   color: "hsl(var(--chart-2))",
-  // },
-} satisfies ChartConfig
+const chartConfig = countriesConfig satisfies ChartConfig
 
 interface Props {
   weatherData: PrevWeatherData[]
@@ -45,7 +38,9 @@ interface Props {
 
 export function WeatherBroadCast(props : Props) {
   const { weatherData } = props;
-  const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>("temperature2mMax");
+  // const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>("Athens"); /// I want this type to be inferred from the keys of chartConfig in my zuistand store
+  const currId = useCurrIdSelected();
+
   const arrTime = Object.values(weatherData[0].metadata.daily?.time);
   const arrTemp = Object.values(weatherData[0].metadata.daily?.temperature2mMax);
   const firstMonth = new Date(arrTime[0]).getMonth();
@@ -53,23 +48,29 @@ export function WeatherBroadCast(props : Props) {
   const currYear = new Date(arrTime[0]).getFullYear();
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const chartData = arrTime.map((time, index) => {
-    return {
-      date: time.slice(0, 10),
-      temperature2mMax: arrTemp[index].toPrecision(2),
-    }
+    const obj = {date: time.slice(0, 10)}
+    const objCountriesTemp = weatherData.map((weather) => ({
+      [weather.name]: Object.values(weather.metadata.daily?.temperature2mMax)[index]?.toPrecision(2)
+    }));
+    return {...obj, ...objCountriesTemp.reduce((acc, val) => Object.assign(acc, val), {})};
   });
   console.log(chartData);
   return (
     <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
-      <CardHeader>
-        <CardTitle>BroadCast of Previous 2 Months</CardTitle>
-        <CardDescription>{`${monthNames[firstMonth]} - ${monthNames[lastMonth]} ${currYear}`}</CardDescription>
+      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+          <CardTitle >BroadCast of Previous 2 Months</CardTitle>
+          <CardDescription>{`${monthNames[firstMonth]} - ${monthNames[lastMonth]} ${currYear}`}</CardDescription>
+        </div>
+        <div className="flex justify-center items-center p-6">
+          <DropdownCountries />
+        </div>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
-            accessibilityLayer
             data={chartData}
+            accessibilityLayer
             margin={{
               top: 20,
               left: 12,
@@ -107,12 +108,12 @@ export function WeatherBroadCast(props : Props) {
               }
             />
             <Line
-              dataKey="temperature2mMax"
+              dataKey={currId as string}
               type="natural"
-              stroke="var(--color-temperature2mMax)"
+              stroke= {`var(--color-${currId})`}
               strokeWidth={2}
               dot={{
-                fill: "var(--color-temperature2mMax)",
+                fill: `var(--color-${currId})`,
               }}
               activeDot={{
                 r: 6,
