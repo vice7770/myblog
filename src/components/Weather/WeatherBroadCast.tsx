@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 import { type PrevWeatherData } from "~/api/weather/graph/types"
 
@@ -21,6 +21,7 @@ import {
 import { countriesConfig } from "~/utils/weather/countries"
 import DropdownCountries from "./BroadCastComponents/DropDownCountries"
 import { useCurrIdSelected } from "~/stores/weatherBroadCast"
+import { TrendingUp } from "lucide-react"
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -54,7 +55,12 @@ export function WeatherBroadCast(props : Props) {
     }));
     return {...obj, ...objCountriesTemp.reduce((acc, val) => Object.assign(acc, val), {})};
   });
-  console.log(chartData);
+  
+  const averageTemp = useMemo( () => {
+    const index = weatherData.findIndex((weather) => weather.name === currId);
+    return Object.values(weatherData[index]?.metadata.daily.temperature2mMax).reduce((acc, val) => acc + val, 0) / Object.values(weatherData[index]?.metadata.daily.temperature2mMax).length;
+  }, [currId, weatherData]);
+  
   return (
     <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
@@ -129,14 +135,14 @@ export function WeatherBroadCast(props : Props) {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
+      <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Average Tempeture is {averageTemp.toPrecision(2)}°C
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing Temperature in the last 2 months
         </div>
-      </CardFooter> */}
+      </CardFooter>
     </Card>
   )
 }
