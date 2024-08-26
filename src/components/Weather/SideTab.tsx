@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { Button } from "~/components/ui/button";
 import { useWeatherActions, useWeatherView } from "~/stores/weatherSection";
-import { SunCloud, Sun, Overview, FullRain, Clouds, PartialRain } from "../../../public/weather/icons";
+import { SunCloud, Overview, GraphIcon } from "../../../public/weather/icons";
 
 const SideTab = () => {
     const { setWeatherView } = useWeatherActions();
@@ -32,10 +32,10 @@ const SideTab = () => {
         </Button>
         <Button
           id="broadcast"
-          className={`${buttonBaseStyle} ${ weatherView === "table" ? "bg-gray-200" : ""}`}
+          className={`${buttonBaseStyle} ${ weatherView === "broadcast" ? "bg-gray-200" : ""}`}
           onClick={(e) => setWeatherView(e.currentTarget.id)}
         >
-          <SunCloud/>
+          <GraphIcon />
         </Button>
       </div>
     );
