@@ -1,7 +1,7 @@
 export interface WeatherMetaData {
   daily: {
     time: string[];
-    sunset: null | Record<string, number>;
+    sunset: Record<string, number>;
     sunrise: Record<string, number>;
     uvIndexMax: Record<string, number>;
     weatherCode: Record<string, number>;
@@ -20,6 +20,7 @@ export interface WeatherMetaData {
     cloudCover: number; // daily cloud cover seems to not be working
     relativeHumidity2m: number;
     windSpeed10m: number; 
+    isDay: number;
   };
   hourly: {
     time: string[];
@@ -36,10 +37,10 @@ export interface PrevWeatherMetaData {
 }
 
 export interface WeatherData {
-  name: string;
+  name: string | null;
   metadata: WeatherMetaData;
 };
 export interface PrevWeatherData {
-  name: string;
+  name: string | null;
   metadata: PrevWeatherMetaData;
 };
