@@ -6,8 +6,8 @@ import { getWeatherMetaData, getWeatherPrev2Months } from "~/api/weather/graph/w
 import WeatherComponent from "./WeatherComponent";
 
 const FeatureSection = async () => {
-    const weatherData : WeatherData[] = await getWeatherMetaData();
-    const weather2PrevMonths : PrevWeatherData[] = await getWeatherPrev2Months();
+    const weatherData = await getWeatherMetaData() as WeatherData[];
+    const weather2PrevMonths = await getWeatherPrev2Months() as PrevWeatherData[];
     const weatherStatus = getWeatherStatus(weatherData.map((weather) => weather.metadata));
     const averageTemp = getWeatherAverageTemp(weatherData.map((weather) => weather.metadata));
     const averageTempYesterday = getWeatherAverageTempYesterday(weatherData.map((weather) => weather.metadata));
