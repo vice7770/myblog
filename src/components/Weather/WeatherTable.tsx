@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useMemo, useState } from "react";
-import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, ColumnDef, CellContext, Cell, Row, HeaderGroup, SortingState, getSortedRowModel, SortingFn } from "@tanstack/react-table";
-import { WeatherMetaData, type WeatherData } from "~/api/weather/graph/types";
+import { flexRender, getCoreRowModel, useReactTable, createColumnHelper, type CellContext, type SortingState, getSortedRowModel, type SortingFn } from "@tanstack/react-table";
+import { type WeatherMetaData, type WeatherData } from "~/api/weather/graph/types";
 import { openSansCell, openSansHeader } from "~/app/fonts";
 import "./index.css";
 import { Clouds, FullRain, PartialRain, Sun, SunCloud } from "public/weather/icons";
@@ -55,8 +55,8 @@ const getDescriptionContent = ((props : {info: CellContext<WeatherTable, React.J
     const isSun = typeName === 'Sun';
     if(isSun) return <span>Its a sunny day, no clouds or rain 😎</span>
     else{
-        const rainPerc = weatherData[rowIndexOfCell].metadata.current.precipitation;
-        const cloudCover = weatherData[rowIndexOfCell].metadata.current.cloudCover;
+        const rainPerc = weatherData?.[rowIndexOfCell] ? weatherData[rowIndexOfCell].metadata.current.precipitation : 0;
+        const cloudCover = weatherData?.[rowIndexOfCell] ? weatherData[rowIndexOfCell].metadata.current.cloudCover : 0;
         return <span>Cloud Cover: {cloudCover}%, Rain: {rainPerc.toFixed(2)}mm</span>
     }
 })
@@ -96,8 +96,8 @@ const WeatherTable = (props : Props) => {
                 temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
                 windspeed: weather.metadata.current.windSpeed10m.toPrecision(2) ?? 0,
                 dailySpeedRange: {
-                    min: weather.metadata.daily.windSpeed10mMin[0].toPrecision(2) ?? 0,
-                    max: weather.metadata.daily.windSpeed10mMax[0].toPrecision(2) ?? 0,
+                    min: weather.metadata.daily.windSpeed10mMin?.[0]?.toPrecision(2) ?? 0,
+                    max: weather.metadata.daily.windSpeed10mMax?.[0]?.toPrecision(2) ?? 0,
                 },
                 humidity: weather.metadata.current.relativeHumidity2m.toPrecision(2),
                 description: getWeatherDescription(weather.metadata),
