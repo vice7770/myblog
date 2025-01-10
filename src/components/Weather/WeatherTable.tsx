@@ -17,14 +17,14 @@ interface Props {
 }
 
 interface WeatherTable {
-    name: string;
-    temperature: number;
-    windspeed: number;
+    name: string | null;
+    temperature: string;
+    windspeed: string;
     dailySpeedRange: {
-        min: number;
-        max: number;
+        min: string;
+        max: string;
     };
-    humidity: number;
+    humidity: string;
     description: React.JSX.Element;
 }
 
@@ -93,11 +93,11 @@ const WeatherTable = (props : Props) => {
         const result = weatherData.map((weather) => {
             return {
                 name: weather.name,
-                temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? 0,
-                windspeed: weather.metadata.current.windSpeed10m.toPrecision(2) ?? 0,
+                temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? "0",
+                windspeed: weather.metadata.current.windSpeed10m.toPrecision(2) ?? "0",
                 dailySpeedRange: {
-                    min: weather.metadata.daily.windSpeed10mMin?.[0]?.toPrecision(2) ?? 0,
-                    max: weather.metadata.daily.windSpeed10mMax?.[0]?.toPrecision(2) ?? 0,
+                    min: weather.metadata.daily.windSpeed10mMin?.[0]?.toPrecision(2) ?? "0",
+                    max: weather.metadata.daily.windSpeed10mMax?.[0]?.toPrecision(2) ?? "0",
                 },
                 humidity: weather.metadata.current.relativeHumidity2m.toPrecision(2),
                 description: getWeatherDescription(weather.metadata),
