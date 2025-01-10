@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts"
 import { type PrevWeatherData } from "~/api/weather/graph/types"
 
 import {
@@ -42,24 +42,36 @@ export function WeatherBroadCast(props : Props) {
   // const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>("Athens"); /// I want this type to be inferred from the keys of chartConfig in my zuistand store
   const currId = useCurrIdSelected();
 
-  const arrTime = Object.values(weatherData[0].metadata.daily?.time);
-  const arrTemp = Object.values(weatherData[0].metadata.daily?.temperature2mMax);
-  const firstMonth = new Date(arrTime[0]).getMonth();
-  const lastMonth = new Date(arrTime[arrTime.length - 1]).getMonth();
-  const currYear = new Date(arrTime[0]).getFullYear();
+  const arrTime = (weatherData[0] && Object.values(weatherData[0].metadata.daily?.time)) ?? [];
+  // const arrTemp = Object.values(weatherData[0].metadata.daily?.temperature2mMax);
+  const firstMonth = new Date(arrTime[0]!).getMonth() || 0;
+  const lastMonth = new Date(arrTime[arrTime.length - 1]!).getMonth() || 0;
+  const currYear = new Date(arrTime[0]!).getFullYear();
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const chartData = arrTime.map((time, index) => {
     const obj = {date: time.slice(0, 10)}
     const objCountriesTemp = weatherData.map((weather) => ({
-      [weather.name]: Object.values(weather.metadata.daily?.temperature2mMax)[index]?.toPrecision(2)
+      [String(weather.name)]: Object.values(weather.metadata.daily?.temperature2mMax)[index]?.toPrecision(2)
     }));
     return {...obj, ...objCountriesTemp.reduce((acc, val) => Object.assign(acc, val), {})};
   });
   
   const averageTemp = useMemo( () => {
     const index = weatherData.findIndex((weather) => weather.name === currId);
-    return Object.values(weatherData[index]?.metadata.daily.temperature2mMax).reduce((acc, val) => acc + val, 0) / Object.values(weatherData[index]?.metadata.daily.temperature2mMax).length;
+    const temperatureData = weatherData[index]?.metadata.daily.temperature2mMax;
+    if (!temperatureData) return 0;
+    return Object.values(temperatureData).reduce((acc, val) => acc + val, 0) / Object.values(temperatureData).length;
   }, [currId, weatherData]);
+
+  const maxTemp = useMemo( () => {
+    const index = weatherData.findIndex((weather) => weather.name === currId);
+    const temperatureData = weatherData[index]?.metadata.daily.temperature2mMax;
+    if (!temperatureData) return 0;
+    return Math.max(...Object.values(temperatureData));
+  }
+  , [currId, weatherData]);
+
+  console.log("maxTemp", maxTemp);
   
   return (
     <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
@@ -83,7 +95,7 @@ export function WeatherBroadCast(props : Props) {
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false}/>
             <XAxis
               dataKey="date"
               tickLine={false}
@@ -91,7 +103,7 @@ export function WeatherBroadCast(props : Props) {
               tickMargin={8} 
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
+                const date = new Date(value as string)
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
@@ -104,7 +116,7 @@ export function WeatherBroadCast(props : Props) {
                   className="w-[150px]"
                   nameKey="views"
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                    return new Date(value as string).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
