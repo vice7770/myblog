@@ -1,4 +1,4 @@
-import { WeatherMetaData } from "~/api/weather/graph/types";
+import { type WeatherMetaData } from "~/api/weather/graph/types";
 
 export function getWeatherStatus(weather : WeatherMetaData[]) {
     const weatherStatus = {
@@ -21,11 +21,11 @@ export function getWeatherStatus(weather : WeatherMetaData[]) {
 }
 
 export function getWeatherAverageTemp(weather : WeatherMetaData[]) {
-    const totalTemp = weather?.reduce((acc, weather) => acc + weather.daily.temperature2mMin[0], 0);
+    const totalTemp = weather?.reduce((acc, weather) => acc + (weather.daily.temperature2mMin[0] ?? 0), 0);
     return totalTemp / weather?.length;
 }
 
 export function getWeatherAverageTempYesterday(weather : WeatherMetaData[]) {
-    const totalTemp = weather?.reduce((acc, weather) => acc + weather.daily.temperature2mMin[1], 0);
+    const totalTemp = weather?.reduce((acc, weather) => acc + (weather.daily.temperature2mMin[1] ?? 0), 0);
     return totalTemp / weather?.length;
 }
