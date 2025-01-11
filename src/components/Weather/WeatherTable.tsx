@@ -93,7 +93,7 @@ const WeatherTable = (props : Props) => {
         const result = weatherData.map((weather) => {
             return {
                 name: weather.name,
-                temperature: weather.metadata.current.temperature2m.toPrecision(3) ?? "0",
+                temperature: weather.metadata.current.temperature2m.toFixed(1) ?? "0",
                 windspeed: weather.metadata.current.windSpeed10m.toPrecision(2) ?? "0",
                 dailySpeedRange: {
                     min: weather.metadata.daily.windSpeed10mMin?.[0]?.toPrecision(2) ?? "0",
