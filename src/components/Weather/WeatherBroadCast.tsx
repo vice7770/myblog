@@ -71,7 +71,12 @@ export function WeatherBroadCast(props : Props) {
   }
   , [currId, weatherData]);
 
-  console.log("maxTemp", maxTemp);
+  const minTemp = useMemo( () => {
+    const index = weatherData.findIndex((weather) => weather.name === currId);
+    const temperatureData = weatherData[index]?.metadata.daily.temperature2mMax;
+    if (!temperatureData) return 0;
+    return Math.min(...Object.values(temperatureData));
+  }, [currId, weatherData]);
   
   return (
     <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
@@ -95,7 +100,16 @@ export function WeatherBroadCast(props : Props) {
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false}/>
+            <CartesianGrid vertical={false} />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value : number) => {
+                return `${value.toFixed(0)}°C`
+              }}
+              domain={[minTemp - 2, maxTemp + 2]}
+            />
             <XAxis
               dataKey="date"
               tickLine={false}
