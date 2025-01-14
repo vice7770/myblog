@@ -57,8 +57,8 @@ export function WeatherChart2(props : Props) {
   return (
     <Card className="flex flex-col w-full h-full rounded-3xl rounded-tr-none">
       <CardHeader>
-        <CardTitle>Weather</CardTitle>
-        <CardDescription>Lets take a look at weather</CardDescription>
+        <CardTitle>Weather Overview</CardTitle>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} >
