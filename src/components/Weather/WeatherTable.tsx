@@ -94,12 +94,12 @@ const WeatherTable = (props : Props) => {
             return {
                 name: weather.name,
                 temperature: weather.metadata.current.temperature2m.toFixed(1) ?? "0",
-                windspeed: weather.metadata.current.windSpeed10m.toPrecision(2) ?? "0",
+                windspeed: weather.metadata.current.windSpeed10m.toFixed(1) ?? "0",
                 dailySpeedRange: {
-                    min: weather.metadata.daily.windSpeed10mMin?.[0]?.toPrecision(2) ?? "0",
-                    max: weather.metadata.daily.windSpeed10mMax?.[0]?.toPrecision(2) ?? "0",
+                    min: weather.metadata.daily.windSpeed10mMin?.[0]?.toFixed(1) ?? "0",
+                    max: weather.metadata.daily.windSpeed10mMax?.[0]?.toFixed(1) ?? "0",
                 },
-                humidity: weather.metadata.current.relativeHumidity2m.toPrecision(2),
+                humidity: weather.metadata.current.relativeHumidity2m.toFixed(),
                 description: getWeatherDescription(weather.metadata),
             }
         });
