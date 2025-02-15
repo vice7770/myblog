@@ -5,6 +5,7 @@ import { getWeatherAverageTemp, getWeatherAverageTempYesterday, getWeatherStatus
 import { type WeatherData, type PrevWeatherData } from "~/api/weather/graph/types";
 import { getWeatherMetaData, getWeatherPrev2Months } from "~/api/weather/graph/weather";
 import WeatherComponent from "./WeatherComponent";
+import { getPacerUserInfo } from "~/api/pacer/pacer";
 
 const FeatureSection = async () => {
     const weatherData = await getWeatherMetaData() as WeatherData[];
@@ -15,7 +16,7 @@ const FeatureSection = async () => {
     return (
         <section className="flex justify-center items-center w-full bg-blue-600 lg:h-[1000px]">
             <div className="grid grid-cols-1 gap-4 md:gap-8 w-full">
-                <h3 className="flex items-center justify-center text-3xl font-boldn text-white">Let's play a little game</h3>
+                <h3 className="flex items-center justify-center text-3xl font-boldn text-white">Let's take a look at the weather</h3>
                 <div className="flex justify-center items-center w-full space-x-4">
                     {/* <ButtonsWeather />                     */}
                 </div>
