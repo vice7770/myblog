@@ -46,7 +46,7 @@ interface Props {
   averageTempYesterday: number
 }
 
-export function WeatherChart2(props : Props) {
+export function WeatherChart2(props: Props) {
   const { weatherStatus, averageTemp, averageTempYesterday } = props
   const chartData = [
     { weather: "hot", count: weatherStatus.hot, fill: "var(--color-hot)" },
@@ -60,9 +60,9 @@ export function WeatherChart2(props : Props) {
         <CardTitle>Weather Overview</CardTitle>
         <CardDescription></CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} >
-          <BarChart accessibilityLayer data={chartData}>
+      <CardContent className="flex-grow h-2/3">
+        <ChartContainer config={chartConfig} className="h-full w-full mx-auto">
+          <BarChart accessibilityLayer data={chartData} className="h-full w-full">
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="weather"
@@ -96,8 +96,8 @@ export function WeatherChart2(props : Props) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start justify-center gap-2 text-sm h-full">
-        <div className="flex gap-2 font-medium leading-none">
+      <CardFooter className="flex-col items-start justify-center gap-1 text-sm">
+        <div className="flex gap-1 font-medium leading-none">
           {"Today the temperature " + (tempIsUp ? "increased" : "decreased")} 
           {tempIsUp ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
         </div>

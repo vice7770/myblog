@@ -44,7 +44,7 @@ const WeatherComponent = (props: Props) => {
         }
     },[isOverViewToggled])
     return (
-        <div className='flex justify-center items-center w-[800px] h-[640px] bg-white rounded-3xl'>
+        <div className='flex justify-center items-center w-[800px] h-[540px] bg-white rounded-3xl'>
             <>
                 {memoChartSection}
                 <SideTab />
